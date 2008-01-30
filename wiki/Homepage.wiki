@@ -1,4 +1,4 @@
-#summary Pagina Principal
+#summary Links to help the development of the product
 
 = Usefull Links =
 
