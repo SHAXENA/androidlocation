@@ -1,0 +1,9 @@
+#summary Pagina Principal
+
+= Usefull Links =
+
+  * [http://freenet-homepage.de/neilyoung/index.html How to convert CID/LAC to Geocode]
+
+  * [http://www.forum.nokia.com/info/sw.nokia.com/id/dbb8841d-832c-43a6-be13-f78119a2b4cb.html Carbide.c++ v1.2] Symbian Development
+
+  * [http://code.google.com/apis/opensocial/ Google Open Social] Social Network API
