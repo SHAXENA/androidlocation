@@ -1,0 +1,20 @@
+#summary Links to help the development of the product
+#labels Links,AndroidLocation
+
+= Usefull Links =
+
+  * [http://code.google.com/apis/opensocial/ Google Open Social] Social Network API
+
+= Similar Products =
+
+  * [http://www.ipoki.com ipoki]
+
+  * [http://loopt.com Loopt]
+
+= Symbian Development Tools =
+
+  * [http://download.netbeans.org/netbeans/6.0/final Netbean with Mobility Pack]
+
+  * [http://sw.nokia.com/id/02055bc6-76c6-4bf3-adc6-216b9de0514e/nS60_jme_sdk_3rd_e_FP1.zip S60 3rd Edition SDK for Symbian OS, Supporting Feature Pack 1, for MIDP] Plugin for Netbean
+
+  * [http://sw.nokia.com/id/d44c7c52-59d2-43b8-8f2f-1fe367e7d72d/Getting_Started_With_NetBeans_v1_0_en.exe Getting Started with Netbeans] 
