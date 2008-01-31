@@ -3,6 +3,8 @@
 
 = Usefull Links =
 
+  * [http://code.google.com/android/adc.html Android Development Challenge]
+
   * [http://code.google.com/apis/opensocial/ Google Open Social] Social Network API
 
 = Similar Products =
