@@ -9,9 +9,9 @@
 
 = Similar Products =
 
-  * [http://www.ipoki.com ipoki]
+  * [http://www.ipoki.com Ipoki] Great Social Location Network
 
-  * [http://loopt.com Loopt]
+  * [http://loopt.com Loopt] Great Product, very similar but it's carrier specific.
 
 = Symbian Development Tools =
 
