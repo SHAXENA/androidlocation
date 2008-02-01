@@ -13,6 +13,8 @@
 
   * [http://loopt.com Loopt] Great Product, very similar but it's carrier specific.
 
+  * [http://www.mologogo.com Monlogo] Great Product, very similar but it's only for GPS devices.
+
 = Symbian Development Tools =
 
   * [http://download.netbeans.org/netbeans/6.0/final Netbean with Mobility Pack]
