@@ -1,7 +1,0 @@
-cellid=329017
-lac=7167
-mnc=410
-mcc=310
-
-cell:cellid=20442  : cell:lac=6015  : cell:mcc=310  : cell:mnc=410  
-http://zonetag.research.yahooapis.com/services/rest/V1/cellLookup.php?apptoken=ZoneTagDemoToken&cellid=20853&lac=6012&mnc=410&mcc=310
