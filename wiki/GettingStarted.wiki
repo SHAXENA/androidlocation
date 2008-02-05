@@ -1,11 +1,12 @@
 #summary Getting Started with Android
 
 To get started with Android you have to:
-  * Install Eclipse (more info on http://code.google.com/android/intro/index.html)
-  * Install Android SDK (more info on http://code.google.com/android/intro/index.html)
+  * [http://code.google.com/android/intro/index.html Install Eclipse]
+  * [http://code.google.com/android/intro/index.html Install Android SDK]
   * [http://subclipse.tigris.org/install.html Install Subversion Plugin for Eclipse]
+
 With the Subversion Plugin in Eclipse you can download our latest version from [https://androidlocation.googlecode.com/svn/trunk/ Here]
  
 Please fell free to ask ANY kind of questions, this is a new Language and we are all going to be very glad to help you in any way. 
 
-*First take a look at the code there are very good tutorials in [http://www.anddev.org Andev] and also in [http://code.google.com/android Google Android]*
+*Good tutorials in [http://www.anddev.org Andev] and also in [http://code.google.com/android Google Android]*
