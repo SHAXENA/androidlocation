@@ -17,6 +17,8 @@ import org.apache.commons.httpclient.methods.RequestEntity;
 
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -27,7 +29,9 @@ import android.view.KeyEvent;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MyMapView;
+import com.google.android.maps.Overlay;
 import com.google.android.maps.Point;
+import com.google.googlenav.Placemark;
 import com.google.googlenav.Search;
 import com.google.googlenav.map.MapPoint;
 
@@ -46,59 +50,80 @@ public class BrowseMap extends MapActivity {
     Point currentlocation = new Point((int) 0, (int) 0);
 
     private static final int MY_NOTIFICATION_ID = 0x100;
-
+    /*
+     * Constructors (or the Entry-Point of it all)
+     * @see com.google.android.maps.MapActivity#onCreate(android.os.Bundle)
+     */
     @Override
     public void onCreate(Bundle icicle) {
+    	/*
+    	 * Execute Parent OnCreate Method
+    	 */
         super.onCreate(icicle);
-        mMapView = new MyMapView(this);
-
-        // Set up the handler for receiving events for service state etc.
+        /*
+         * Set up the handler for receiving events for service state. Like Cell-Id and LAC to determine location
+         */
         mPhoneStateReceiver = new PhoneStateIntentReceiver(this, new ServiceStateHandler());
         mPhoneStateReceiver.notifyServiceState(MY_NOTIFICATION_ID);
         mPhoneStateReceiver.notifyPhoneCallState(MY_NOTIFICATION_ID);
         mPhoneStateReceiver.notifySignalStrength(MY_NOTIFICATION_ID);
         mPhoneStateReceiver.registerIntent();
-        
-        MapController mc = mMapView.getController();
-        mc.zoomTo(9);
+        /*
+         * Create a new MapView
+         */
+        mMapView = new MyMapView(this);
+        /*
+         * Show the Map
+         */
         setContentView(mMapView);
-
-        mMapView.createOverlayController().add(
-                new MyOverlay(this,currentlocation),
-                true);
+		/* 
+		 * MapController is capable of zooming 
+		 * and animating and stuff like that 
+		 */
+        MapController mc = mMapView.getController();
+        /*
+         * Zoom not so far
+         */
+        mc.zoomTo(9);
+        
+		/* With these objects we are capable of 
+		 * drawing graphical stuff on top of the map */
+		mMapView.createOverlayController().add(new MyOverlay(),true);
+		
     }
+    
+    /*
+     * When the user hit a Key
+     * @see android.app.Activity#onKeyDown(int, android.view.KeyEvent)
+     */
 
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_I) {
             // Zoom In
             int level = mMapView.getZoomLevel();
             mMapView.getController().zoomTo(level + 1);
-            return true;
         } else if (keyCode == KeyEvent.KEYCODE_O) {
             // Zoom Out
             int level = mMapView.getZoomLevel();
             mMapView.getController().zoomTo(level - 1);
-            return true;
         } else if (keyCode == KeyEvent.KEYCODE_S) {
             // Switch on the satellite images
             mMapView.toggleSatellite();
-            return true;
         } else if (keyCode == KeyEvent.KEYCODE_T) {
             // Switch on traffic overlays
             mMapView.toggleTraffic();
-            return true;
         } else if (keyCode == KeyEvent.KEYCODE_0) {
-            MapController mc = mMapView.getController();
+        	/*
+        	 * Va hacia My Location
+        	 */
+        	MapController mc = mMapView.getController();
             mc.animateTo(currentlocation);
             mc.zoomTo(14);
-            return true;
         } else if (keyCode == KeyEvent.KEYCODE_F) {
             Intent intent = new Intent(BrowseMap.this, org.apache.maps.Search.class);
             startSubActivity(intent, GET_SEARCH_TEXT);
-            return true;
         } else if (keyCode == KeyEvent.KEYCODE_P) {
             startSearch("Pizza");
-            return true;
         } else if (keyCode >= KeyEvent.KEYCODE_1 && keyCode <= KeyEvent.KEYCODE_9) {
             int item = keyCode - KeyEvent.KEYCODE_1;
             if (mSearch != null && mSearch.numPlacemarks() > item) {
@@ -110,9 +135,12 @@ public class BrowseMap extends MapActivity {
                 goTo(item);
             }
         }
-        return false;
+        return true;
     }
 
+    /*
+     * Seach objects in the Map
+     */
     private void startSearch(String text) {
         // W00t! Search for Pizza near the center of the map
         mSearch = new Search(text, mMapView.getMap(), 0);
@@ -132,7 +160,6 @@ public class BrowseMap extends MapActivity {
                     nm.notifyWithText(999,
                             "Found " + mSearch.numPlacemarks() + " locations",
                             NotificationManager.LENGTH_SHORT, null);
-
                     goTo(0);
                 } else {
                     nm.notifyWithText(1000,
@@ -144,6 +171,9 @@ public class BrowseMap extends MapActivity {
         t.start();
     }
 
+    /*
+     * Goto one of the 9 objects found
+     */
     private void goTo(int itemNo) {
         MapPoint location = mSearch.getPlacemark(itemNo).getLocation();
         Point p = new Point(location.getLatitude(),
@@ -162,6 +192,50 @@ public class BrowseMap extends MapActivity {
 
     private static HttpConnectionManager connectionManager = new SimpleHttpConnectionManager();
 
+    /*
+     * Draw objects in the Map 
+     */
+    public class MyOverlay extends Overlay {
+        public void draw(Canvas canvas, PixelCalculator pixelCalculator, boolean b) {
+            super.draw(canvas, pixelCalculator, b);
+            Paint paint1 = new Paint();
+            Paint paint2 = new Paint();
+            Paint paint3 = new Paint();
+
+            paint1.setARGB(255, 49, 25, 173);
+            paint2.setARGB(255, 255, 255, 255);
+            paint3.setARGB(50, 49, 25, 173);
+
+            int[] screenCoords = new int[2];
+            
+            /*
+             * Draw a circle in my current location
+             */
+            if (currentlocation.getLatitudeE6()!=0 && currentlocation.getLongitudeE6()!=0) 
+            {
+                pixelCalculator.getPointXY(currentlocation, screenCoords);
+                canvas.drawCircle(screenCoords[0], screenCoords[1], 49, paint3);
+            }
+            /*
+             * Draw found objects
+             */
+            Search search = BrowseMap.this.getSearch();
+            if (search != null) {
+                for (int i = 0; i < search.numPlacemarks(); i++) {
+                    Placemark placemark = search.getPlacemark(i);
+                    Point point = new Point(placemark.getLocation().getLatitude(),
+                            placemark.getLocation().getLongitude());
+                    pixelCalculator.getPointXY(point, screenCoords);
+                    canvas.drawCircle(screenCoords[0], screenCoords[1], 9, paint1);
+                    canvas.drawText(Integer.toString(i + 1),
+                            screenCoords[0] - 4,
+                            screenCoords[1] + 4, paint2);
+                }
+
+            }
+        }
+    }
+    
     /*
      * Detecta el Cell ID y el LAC y luego llama a la funcion convertCellID
      * para convertirlo a coordenadas
@@ -277,6 +351,8 @@ public class BrowseMap extends MapActivity {
         }
     }
 
+    
+    
     @Override
     protected void onActivityResult(int requestCode, int resultCode,
                                     String data, Bundle extras) {
