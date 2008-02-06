@@ -166,6 +166,7 @@ public class FriendFinder extends ListActivity {
 	// ===========================================================
 	
 	private void refreshFriendsList(){
+		// TODO: Get Objects Web Service instead of Phone Contacts
 		Cursor c = getContentResolver().query(People.CONTENT_URI, 
 				null, null, null, People.NAME + " ASC");
 		/* This method allows the activity to take
@@ -213,6 +214,7 @@ public class FriendFinder extends ListActivity {
 	}
 	
 	private void updateList() {
+		// TODO: Create a Class for detecting location (GPS or GSM Cell) and use it in FrindFiender and BrowseMap
 		// Refresh our location...
 		this.myLocation = myLocationManager.getCurrentLocation("gps");
 		

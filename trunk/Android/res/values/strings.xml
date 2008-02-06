@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">BrowseMap</string>
-    <string name="main_title">FriendFinder - anddev.org</string>
-    <string name="main_menu_open_map">Open visual FriendTracker</string>
+    <string name="main_title">Android Location</string>
+    <string name="main_menu_open_map">Open Map</string>
     <string name="main_list_format">$name ($distance km)</string>
     <string name="main_list_geo_not_set">not set</string>
-    <string name="map_title">FriendFinder - anddev.org</string>
+    <string name="map_title">Android Location</string>
     <string name="map_menu_zoom_in">Zoom in (Key: I)</string>
     <string name="map_menu_zoom_out">Zoom out (Key: O)</string>
     <string name="map_menu_back_to_list">Back to list</string>
-    <string name="map_menu_toggle_street_satellite">Toggle View: Street / Satellite (Key: T)</string>
+    <string name="map_menu_toggle_street_satellite">Toggle Street / Satellite (Key: S)</string>
+    <string name="map_menu_toggle_traffic">Toggle Traffic (Key: T)</string>
     <string name="map_overlay_own_name">Me</string>
+    <string name="map_menu_gotocurrentlocation">Go to Current Location</string>
 </resources>
