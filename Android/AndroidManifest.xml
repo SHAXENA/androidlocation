@@ -1,6 +1,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.apache.maps">
+    <uses-permission id="android.permission.READ_CONTACTS"/>
+    <uses-permission id="android.permission.CALL_PHONE"/>
     <application>
+        <activity class=".FriendFinder" android:label="@string/main_title">
+            <intent-filter>
+                <action android:value="android.intent.action.MAIN" />
+                <category android:value="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity class=".BrowseMap" android:label="BrowseMap">
             <intent-filter>
                 <action android:value="android.intent.action.MAIN" />
