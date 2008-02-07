@@ -7,9 +7,7 @@ import android.widget.EditText;
 import android.view.View;
 
 public class Search extends Activity {
-    public Search() {
-    }
-
+    public Search() {}
     /**
      * Called with the activity is first created.
      */
@@ -17,17 +15,19 @@ public class Search extends Activity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        // Set the layout for this activity.  You can find it
-        // in res/layout/hello_activity.xml
+        // Set the layout for this activity.  You can find it in /res/layout/main.xml
         setContentView(R.layout.main);
 
         Button addButton = (Button) findViewById(R.id.searchButton);
-        addButton.setOnClickListener(new View.OnClickListener() {
+        addButton.setOnClickListener(
+        		new View.OnClickListener() {
 
-            public void onClick(View v) {
-                setResult(RESULT_OK, ((EditText)findViewById(R.id.searchText)).getText().toString());
-                finish();
-            } });
-
+	        		public void onClick(View v) {
+	        			// return RESULT_OK and Textbox Text to its caller
+	        			setResult(RESULT_OK, ((EditText)findViewById(R.id.searchText)).getText().toString());
+	        			finish(); // Return to Main Activity Method OnActivityResult
+	        		} 
+        		}
+        );
     }
 }
