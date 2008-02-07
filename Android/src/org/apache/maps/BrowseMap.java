@@ -56,6 +56,8 @@ public class BrowseMap extends MapActivity {
 	 * Define variables
 	 */
 	protected boolean doUpdates = true;
+	protected boolean gps = false;
+	protected boolean virtualgps = false;
 	private PhoneStateIntentReceiver mPhoneStateReceiver;
     private MyMapView mMapView;
     private Search mSearch;
@@ -134,8 +136,14 @@ public class BrowseMap extends MapActivity {
 		    	mMapView.toggleTraffic();
 		        return true;
 		    case 4:
-	        	mMapView.getController().animateTo(myPoint);
-	        	mMapView.getController().zoomTo(ZOOM_INITIAL_LEVEL);
+		    	// Goto My Location
+		    	if (gps || virtualgps) {
+		        	mMapView.getController().animateTo(myPoint);
+		        	mMapView.getController().zoomTo(ZOOM_INITIAL_LEVEL);
+		    	} else {
+	                NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+	                nm.notifyWithText(1000,"Sorry, could not detect your location",NotificationManager.LENGTH_SHORT, null);
+		    	}
 		        return true;
 		    case 5:
 		    	this.finish();
@@ -165,11 +173,14 @@ public class BrowseMap extends MapActivity {
             mMapView.toggleTraffic();
 	        return true;
         } else if (keyCode == KeyEvent.KEYCODE_0) {
-        	/*
-        	 * Va hacia My Location
-        	 */
-        	mMapView.getController().animateTo(myPoint);
-        	mMapView.getController().zoomTo(ZOOM_INITIAL_LEVEL);
+	    	// Goto My Location
+	    	if (gps || virtualgps) {
+	        	mMapView.getController().animateTo(myPoint);
+	        	mMapView.getController().zoomTo(ZOOM_INITIAL_LEVEL);
+	    	} else {
+                NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                nm.notifyWithText(1000,"Sorry, could not detect your location",NotificationManager.LENGTH_SHORT, null);
+	    	}
 	        return true;
         } else if (keyCode == KeyEvent.KEYCODE_F) {
         	/*
@@ -273,10 +284,12 @@ public class BrowseMap extends MapActivity {
              */
             if (myPoint.getLatitudeE6()!=0 && myPoint.getLongitudeE6()!=0) 
             {
-            	int radioMeters = 1700;
             	float radioPixels = getPixelPerMeter(pixelCalculator);
             	pixelCalculator.getPointXY(myPoint, screenCoords);
-                canvas.drawCircle(screenCoords[0], screenCoords[1], radioPixels * radioMeters, paint3);
+            	if (gps) {
+                    canvas.drawCircle(screenCoords[0], screenCoords[1], radioPixels * 30, paint1);
+            	} 
+            	canvas.drawCircle(screenCoords[0], screenCoords[1], radioPixels * 1700, paint3);
             }
             /*
              * Draw distance from current position to my location
@@ -423,8 +436,8 @@ public class BrowseMap extends MapActivity {
         dis.readByte();
         int code = dis.readInt();
         if (code == 0) {
-            double lat = (double) dis.readInt() / 1000000D;
-            double lng = (double) dis.readInt() / 1000000D;
+            double lat = (double) dis.readInt() / 1E6;
+            double lng = (double) dis.readInt() / 1E6;
             dis.readInt();
             dis.readInt();
             dis.readUTF();
@@ -435,8 +448,7 @@ public class BrowseMap extends MapActivity {
              */
             myLocation.setLatitude(lat);
             myLocation.setLongitude(lng);
-        } else {
-    		// TODO: Disable option to go to current location
+			this.virtualgps = true;
         }
  		myPoint = new Point((int) (myLocation.getLatitude() * 1E6), (int)
                 (myLocation.getLongitude() * 1E6));
@@ -445,7 +457,7 @@ public class BrowseMap extends MapActivity {
  		 */
         connection.close();
         connection.releaseConnection();
-		this.refreshFriendsList(NEARFRIEND_MAX_DISTANCE);
+		this.refreshObjectsList(NEARFRIEND_MAX_DISTANCE);
     }
 
 
@@ -499,6 +511,9 @@ public class BrowseMap extends MapActivity {
     }
 
 
+    /*
+     * Method executed when Subactivity Search.java returns
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode,
                                     String data, Bundle extras) {
@@ -511,9 +526,10 @@ public class BrowseMap extends MapActivity {
     /*
      * Read friends from Phone Contacts and put them in a array
      */
-    private void refreshFriendsList(long maxDistanceInMeter){
+    private void refreshObjectsList(long maxDistanceInMeter){
     	// TODO: Web objects from Web Service instead of Phone Contacts
     	// TODO: In the application setting specify how often this refresh will occurr
+//    	java.util.Date currentTime = new java.util.Date();
 		Cursor c = getContentResolver().query(People.CONTENT_URI, null, null, null, People.NAME + " ASC");
 		startManagingCursor(c);
 
@@ -574,6 +590,7 @@ public class BrowseMap extends MapActivity {
 		LocationProvider provider = providers.get(0);
 		// If GPS is available setup refresh
 		if (myLocationManager.getProviderStatus("gps")==LocationProvider.AVAILABLE){
+			this.gps = true;
 			this.myLocationManager.requestUpdates(provider, MINIMUM_TIME_BETWEEN_UPDATE,
 					MINIMUM_DISTANCECHANGE_FOR_UPDATE, new Intent(MY_LOCATION_CHANGED_ACTION));
 			
@@ -584,6 +601,7 @@ public class BrowseMap extends MapActivity {
 			Log.i(getString(R.string.main_title), "GPS Detected and setup for autorefreshing");
 			}
 		else {
+			this.gps = false;
 	        /*
 	         * Set up the handler for receiving events for service state. Like Cell-Id and LAC to determine location
 	         */
@@ -652,7 +670,7 @@ public class BrowseMap extends MapActivity {
 		
 		/* As the location of our Friends is static and 
 		 * for performance-reasons, we do not call this */
-		this.refreshFriendsList(NEARFRIEND_MAX_DISTANCE);
+		this.refreshObjectsList(NEARFRIEND_MAX_DISTANCE);
 	}
 	
 }
