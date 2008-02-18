@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:padding="4dip"
+              android:gravity="center_horizontal"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
+    <TextView android:id="@+id/usernameLabel" 
+              android:layout_width="fill_parent" 
+              android:layout_height="wrap_content" 
+              android:text="Username:"/>
+    <EditText android:id="@+id/usernameText"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:singleLine="true"
+              android:textSize="16sp"
+              android:autoText="false"
+              android:capitalize="none"
+              android:scrollHorizontally="true">
+        <requestFocus/>
+    </EditText>
+    <TextView android:id="@+id/passwordLabel" 
+              android:layout_width="fill_parent" 
+              android:layout_height="wrap_content" 
+              android:text="Password:"/>
+    <EditText android:id="@+id/passwordText"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:singleLine="true"
+              android:textSize="16sp"
+              android:autoText="false"
+              android:capitalize="none"
+              android:scrollHorizontally="true">
+        <requestFocus/>
+    </EditText>
+    <TextView android:id="@+id/refreshLabel" 
+              android:layout_width="fill_parent" 
+              android:layout_height="wrap_content" 
+              android:text="Refresh every (minutes):"/>
+    <EditText android:id="@+id/refreshText"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:singleLine="true"
+              android:textSize="16sp"
+              android:autoText="false"
+              android:capitalize="none"
+              android:scrollHorizontally="true">
+        <requestFocus/>
+    </EditText>
+
+    <Button android:id="@+id/saveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save">
+    </Button>
+
+</LinearLayout>
+
